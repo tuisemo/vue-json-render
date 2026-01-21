@@ -71,21 +71,21 @@ export const builtInValidationFunctions: Readonly<Record<string, ValidationFunct
 
   minLength: (value: unknown, args) => {
     if (typeof value !== 'string') return false;
-    const min = args?.min;
+    const min = args?.['min'];
     if (typeof min !== 'number') return false;
     return value.length >= min;
   },
 
   maxLength: (value: unknown, args) => {
     if (typeof value !== 'string') return false;
-    const max = args?.max;
+    const max = args?.['max'];
     if (typeof max !== 'number') return false;
     return value.length <= max;
   },
 
   pattern: (value: unknown, args) => {
     if (typeof value !== 'string') return false;
-    const pattern = args?.pattern;
+    const pattern = args?.['pattern'];
     if (typeof pattern !== 'string') return false;
     try {
       return new RegExp(pattern).test(value);
@@ -96,14 +96,14 @@ export const builtInValidationFunctions: Readonly<Record<string, ValidationFunct
 
   min: (value: unknown, args) => {
     if (typeof value !== 'number') return false;
-    const min = args?.min;
+    const min = args?.['min'];
     if (typeof min !== 'number') return false;
     return value >= min;
   },
 
   max: (value: unknown, args) => {
     if (typeof value !== 'number') return false;
-    const max = args?.max;
+    const max = args?.['max'];
     if (typeof max !== 'number') return false;
     return value <= max;
   },
@@ -125,7 +125,7 @@ export const builtInValidationFunctions: Readonly<Record<string, ValidationFunct
   },
 
   matches: (value: unknown, args) => {
-    const other = args?.other;
+    const other = args?.['other'];
     return value === other;
   },
 } as const;
