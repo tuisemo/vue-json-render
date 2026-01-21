@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./base.json" },
+    { "path": "./library.json" }
+  ]
+}

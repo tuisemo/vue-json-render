@@ -1,0 +1,32 @@
+{
+  "name": "vue-json-render",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generative UI system for Vue 3",
+  "license": "MIT",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/vitest-config": "workspace:*",
+    "turbo": "^2.4.4",
+    "typescript": "5.9.2",
+    "vite": "6.0.11",
+    "vitest": "^4.0.17",
+    "eslint": "^9.39.1",
+    "@typescript-eslint/eslint-plugin": "^8.24.2",
+    "@typescript-eslint/parser": "^8.24.2"
+  },
+  "packageManager": "pnpm@10.26.1",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  }
+}

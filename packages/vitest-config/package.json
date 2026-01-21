@@ -1,0 +1,10 @@
+{
+  "name": "@repo/vitest-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "dependencies": {
+    "vitest": "^4.0.17",
+    "@vitest/ui": "^4.0.17"
+  }
+}

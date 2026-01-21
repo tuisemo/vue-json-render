@@ -1,0 +1,40 @@
+{
+  "name": "@vue-json-render/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 integration for generative UI system",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vue-json-render/core": "workspace:*",
+    "@vue-json-render/design-system": "workspace:*",
+    "vue": "^3.5.13"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@repo/vitest-config": "workspace:*",
+    "@vue/compiler-sfc": "^3.5.13",
+    "tsup": "^8.0.2",
+    "typescript": "5.9.2",
+    "vitest": "^4.0.17",
+    "@vue/test-utils": "^2.4.6"
+  }
+}

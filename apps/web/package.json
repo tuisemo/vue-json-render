@@ -1,0 +1,34 @@
+{
+  "name": "@vue-json-render/web",
+  "version": "0.1.0",
+  "description": "Web application for Vue 3 generative UI system",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint src --fix",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vue-json-render/core": "workspace:*",
+    "@vue-json-render/vue": "workspace:*",
+    "@vue-json-render/design-system": "workspace:*",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "ai": "^6.0.33",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/compiler-sfc": "^3.5.13",
+    "vite": "^6.0.11",
+    "vue-tsc": "^2.2.0",
+    "typescript": "5.9.2"
+  }
+}

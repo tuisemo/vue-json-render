@@ -1,0 +1,28 @@
+{
+  "name": "@vue-json-render/design-system",
+  "version": "0.1.0",
+  "description": "Aurora Glass Design System - Unique visual language",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "node build.js",
+    "dev": "tsup --watch"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "tsup": "^8.0.2",
+    "typescript": "5.9.2",
+    "vue": "^3.5.13"
+  }
+}
