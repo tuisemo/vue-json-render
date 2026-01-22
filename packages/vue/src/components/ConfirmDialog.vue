@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { GlassButton } from '@vue-json-render/design-system';
+import GlassButton from '@vue-json-render/design-system/components/GlassButton.vue';
 import { useActions } from '../composables/useActions';
 import { interpolateString } from '@vue-json-render/core';
 

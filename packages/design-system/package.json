@@ -12,7 +12,8 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./components/*.vue": "./src/components/*.vue"
   },
   "files": ["dist"],
   "scripts": {

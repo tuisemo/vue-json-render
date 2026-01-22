@@ -72,7 +72,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const model = process.env.AI_MODEL || 'qwen3-max';
+    const model = (globalThis as any).process?.env?.AI_MODEL || import.meta.env.VITE_AI_MODEL || 'qwen3-max';
 
     console.log('Generating UI with model:', model);
     console.log('Prompt:', prompt);

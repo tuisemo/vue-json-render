@@ -4,15 +4,17 @@ import {
   defineComponent,
   type PropType,
 } from 'vue';
+import AuroraText from '@vue-json-render/design-system/components/AuroraText.vue';
 import {
-  GlassCard,
-  GlassButton,
-  AuroraText,
+  // Note: Vue SFC components need to be imported directly from their files
+  // because they cannot be bundled by tsup
+  // import GlassCard from '@vue-json-render/vue/components/GlassCard.vue';
+  // import GlassButton from '@vue-json-render/vue/components/GlassButton.vue';
   useGlass,
   useAurora,
   useDataBinding,
+  useDataValue,
   useAction,
-  useData,
 } from '@vue-json-render/vue';
 import type { UIElement } from '@vue-json-render/core';
 
@@ -31,20 +33,21 @@ export const componentRegistry = {
       },
     },
     setup(props, { slots }) {
+      const { getGlassStyle } = useGlass();
       const title = props.element.props.title as string | undefined;
       const description = props.element.props.description as string | undefined;
 
       return () =>
         h(
-          GlassCard,
+          'div',
           {
-            size: props.element.props.size || 'md',
-            animated: true,
+            class: 'glass-card',
+            style: getGlassStyle('card'),
           },
-          () => [
+          [
             title &&
-              h(AuroraText, { size: 'lg', weight: 'semibold' }, () => title),
-            description && h('p', { class: 'text-glass-muted mt-2' }, description),
+              h('h3', { class: 'glass-card__title' }, title),
+            description && h('p', { class: 'glass-card__description' }, description),
             slots.default?.(),
           ],
         );
@@ -121,17 +124,43 @@ export const componentRegistry = {
       },
     },
     setup(props) {
+      const { auroraColor } = useAurora();
       const content = computed(() => props.element.props.content as string);
+
+      const sizeClass = {
+        xs: 'text-xs',
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'text-lg',
+        xl: 'text-xl',
+        '2xl': 'text-2xl',
+        '3xl': 'text-3xl',
+      }[props.element.props.size as string] || 'text-base';
+
+      const weightClass = {
+        normal: 'font-normal',
+        medium: 'font-medium',
+        semibold: 'font-semibold',
+        bold: 'font-bold',
+      }[props.element.props.weight as string] || 'font-semibold';
+
+      const textStyle = computed(() => ({
+        ...(props.element.props.animated !== false && {
+          'background-clip': 'text',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          background: `linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #ec4899 100%)`,
+        }),
+      }));
 
       return () =>
         h(
-          AuroraText,
+          'span',
           {
-            size: props.element.props.size || 'md',
-            weight: props.element.props.weight || 'semibold',
-            animated: props.element.props.animated !== false,
+            class: ['aurora-text', sizeClass, weightClass],
+            style: textStyle.value,
           },
-          () => content.value,
+          content.value,
         );
     },
   }),
@@ -155,20 +184,32 @@ export const componentRegistry = {
 
       const handleClick = () => {
         if (props.onAction) {
-          props.onAction({ name: props.element.props.action as string });
+          const actionName = props.element.props.action as string;
+          props.onAction({ name: actionName });
+        } else {
+          // Fallback: execute directly
+          execute();
         }
       };
 
+      const { getGlassStyle } = useGlass();
+
+      const buttonStyle = computed(() => ({
+        ...getGlassStyle('button'),
+        opacity: isLoading.value ? 0.6 : 1,
+        cursor: isLoading.value ? 'not-allowed' : 'pointer',
+      }));
+
       return () =>
         h(
-          GlassButton,
+          'button',
           {
-            variant: props.element.props.variant || 'primary',
-            size: props.element.props.size || 'md',
-            loading: isLoading.value,
+            class: 'glass-button',
+            style: buttonStyle.value,
             onClick: handleClick,
+            disabled: isLoading.value,
           },
-          () => props.element.props.label,
+          isLoading.value ? 'Loading...' : (props.element.props.label as string),
         );
     },
   }),
@@ -241,7 +282,7 @@ export const componentRegistry = {
       },
     },
     setup(props) {
-      const value = useData().useDataValue(props.element.props.valuePath as string);
+      const value = useDataValue<number>(props.element.props.valuePath as string);
 
       const formattedValue = computed(() => {
         const format = props.element.props.format || 'number';
@@ -336,13 +377,18 @@ export const componentRegistry = {
               ? 'cyan'
               : 'purple';
 
-      const badgeStyle = computed(() => ({
-        background: `rgba(${hexToRgb(auroraColor(badgeColor).value)}, 0.2)`,
-        color: auroraColor(badgeColor).value,
-        ...(props.element.props.glow && {
-          'box-shadow': `0 0 20px ${auroraColor(badgeColor).value}66`,
-        }),
-      }));
+      const badgeStyle = computed(() => {
+        const isHex = badgeColor.startsWith('#');
+        const colorValue = isHex ? badgeColor : auroraColor(badgeColor as any).value;
+
+        return {
+          background: `rgba(${hexToRgb(colorValue)}, 0.2)`,
+          color: colorValue,
+          ...(props.element.props.glow && {
+            'box-shadow': `0 0 20px ${colorValue}66`,
+          }),
+        };
+      });
 
       return () =>
         h('span', { class: 'badge', style: badgeStyle.value }, props.element.props.text);
@@ -369,10 +415,15 @@ export const componentRegistry = {
             ? '#ef4444'
             : 'blue';
 
-      const alertStyle = computed(() => ({
-        borderColor: auroraColor(alertColor).value,
-        backgroundColor: `rgba(${hexToRgb(auroraColor(alertColor).value)}, 0.1)`,
-      }));
+      const alertStyle = computed(() => {
+        const isHex = alertColor.startsWith('#');
+        const colorValue = isHex ? alertColor : auroraColor(alertColor as any).value;
+
+        return {
+          borderColor: colorValue,
+          backgroundColor: `rgba(${hexToRgb(colorValue)}, 0.1)`,
+        };
+      });
 
       return () =>
         h('div', { class: 'alert', style: alertStyle.value }, [

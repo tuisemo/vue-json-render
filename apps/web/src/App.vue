@@ -1,10 +1,15 @@
 <template>
-  <div class="app-container">
-    <!-- Particle Background -->
-    <div class="particles-bg" />
+  <JsonUIProvider
+    :registry="componentRegistry"
+    :initialData="initialData"
+    :actionHandlers="actionHandlers"
+  >
+    <div class="app-container">
+      <!-- Particle Background -->
+      <div class="particles-bg" />
 
-    <!-- Main Content -->
-    <div class="app-content">
+      <!-- Main Content -->
+      <div class="app-content">
       <!-- Header -->
       <header class="header">
         <AuroraText size="2xl" weight="bold">
@@ -145,24 +150,21 @@
 
     <!-- Confirm Dialog -->
     <ConfirmDialog />
-  </div>
+  </JsonUIProvider>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import {
   JsonUIProvider,
-  Renderer,
-  ConfirmDialog,
   useUIStream,
-  useData,
-  useActions,
 } from '@vue-json-render/vue';
-import {
-  AuroraText,
-  GlassCard,
-  GlassButton,
-} from '@vue-json-render/design-system';
+// Note: Vue SFC components need to be imported directly from their files
+import Renderer from '@vue-json-render/vue/components/Renderer.vue';
+import ConfirmDialog from '@vue-json-render/vue/components/ConfirmDialog.vue';
+import AuroraText from '@vue-json-render/design-system/components/AuroraText.vue';
+import GlassCard from '@vue-json-render/design-system/components/GlassCard.vue';
+import GlassButton from '@vue-json-render/design-system/components/GlassButton.vue';
 import { componentRegistry } from '@/components/registry';
 
 // State
@@ -201,7 +203,28 @@ const initialData = {
   },
 };
 
-const { data } = useData();
+// Use a computed ref for current data to pass in requests
+const currentData = computed(() => initialData);
+
+// Action handlers
+const actionHandlers = {
+  submit_form: async (params: any) => {
+    console.log('Form submitted:', params);
+    alert('Form submitted! Check console for details.');
+  },
+  cancel_action: (params: any) => {
+    console.log('Action cancelled:', params);
+  },
+  confirm_dialog: (params: any) => {
+    console.log('Confirmation requested:', params);
+  },
+  refresh_data: (params: any) => {
+    console.log('Refreshing data:', params);
+  },
+  navigate_to: (params: any) => {
+    console.log('Navigating to:', params.path);
+  },
+};
 
 // Methods
 const setPrompt = (text: string): void => {
@@ -213,7 +236,7 @@ const handleSubmit = async (e: Event): Promise<void> => {
   if (!prompt.value.trim() || isStreaming.value) return;
 
   await send(prompt.value, {
-    dataModel: data,
+    dataModel: currentData.value,
   });
 };
 

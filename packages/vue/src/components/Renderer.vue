@@ -69,7 +69,7 @@ provide(RENDERER_CONTEXT_KEY, {
 </script>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type PropType } from 'vue';
+import { defineComponent, computed, type PropType } from 'vue';
 
 export const UIElementRenderer = defineComponent({
   name: 'UIElementRenderer',
@@ -89,12 +89,6 @@ export const UIElementRenderer = defineComponent({
     loading: Boolean,
   },
   setup(props) {
-    const rendererContext = inject<{
-      tree: Readonly<UITree>;
-      registry: Record<string, any>;
-      loading: boolean;
-    }>(Symbol('renderer-context'));
-
     const { isVisible } = useVisibility();
     const { execute, loadingActions } = useActions();
 

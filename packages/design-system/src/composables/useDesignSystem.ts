@@ -1,4 +1,4 @@
-import { inject, computed, type InjectionKey } from 'vue';
+import { inject, provide, computed, type InjectionKey } from 'vue';
 import type { DesignSystemConfig } from '../types';
 
 const DESIGN_SYSTEM_KEY: InjectionKey<DesignSystemConfig> = Symbol('design-system');
@@ -7,7 +7,7 @@ const DESIGN_SYSTEM_KEY: InjectionKey<DesignSystemConfig> = Symbol('design-syste
  * Provide design system configuration
  */
 export function provideDesignSystem(config: DesignSystemConfig): void {
-  inject(DESIGN_SYSTEM_KEY, config, true);
+  provide(DESIGN_SYSTEM_KEY, config);
 }
 
 /**
@@ -16,10 +16,10 @@ export function provideDesignSystem(config: DesignSystemConfig): void {
 export function useDesignSystem(): Required<DesignSystemConfig> {
   const config = inject(DESIGN_SYSTEM_KEY);
 
-  return computed(() => ({
+  return {
     theme: config?.theme ?? 'aurora',
     animations: config?.animations ?? true,
     glassmorphism: config?.glassmorphism ?? true,
     particleEffects: config?.particleEffects ?? true,
-  })) as Required<DesignSystemConfig>;
+  };
 }

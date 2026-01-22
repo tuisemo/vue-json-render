@@ -2,14 +2,16 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import {
   JsonUIProvider,
-  Renderer,
-  ConfirmDialog,
-  useData,
-  useActions,
 } from '@vue-json-render/vue';
+
+// Note: Vue SFC components need to be imported directly from their files
+import Renderer from '@vue-json-render/vue/components/Renderer.vue';
+import ConfirmDialog from '@vue-json-render/vue/components/ConfirmDialog.vue';
 
 const app = createApp(App);
 
-// No additional setup needed as providers are used in App.vue
+// Register components globally if needed
+app.component('Renderer', Renderer);
+app.component('ConfirmDialog', ConfirmDialog);
 
 app.mount('#app');

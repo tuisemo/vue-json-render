@@ -19,6 +19,37 @@ export {
   clone,
 } from './types';
 
+// Error handling
+export {
+  JsonUIError,
+  ValidationError,
+  CatalogError,
+  ActionError,
+  StreamError,
+  RenderError,
+  isJsonUIError,
+  isValidationError,
+  isCatalogError,
+  isActionError,
+  getErrorMessage,
+  logError,
+} from './errors';
+
+// Logging
+export {
+  type LogLevel,
+  type Logger,
+  type LoggerOptions,
+  setLogger,
+  getLogger,
+  createLogger,
+  logDebug,
+  logInfo,
+  logWarn,
+  logError2 as logLoggerError,
+  createScopedLogger,
+} from './logger';
+
 export {
   DynamicValueSchema,
   DynamicStringSchema,

@@ -2,6 +2,7 @@ import {
   inject,
   reactive,
   ref,
+  computed,
   type InjectionKey,
   type Ref,
   type ComputedRef,
@@ -58,6 +59,8 @@ export interface ActionProviderProps {
   handlers?: Record<string, ActionHandler>;
   /** Navigation function */
   navigate?: (path: string) => void;
+  /** Data context (required to avoid dependency issues) */
+  dataContext: DataContextValue;
 }
 
 /**
@@ -66,8 +69,9 @@ export interface ActionProviderProps {
 export function provideActionContext({
   handlers: initialHandlers = {},
   navigate,
+  dataContext,
 }: ActionProviderProps): ActionContextValue {
-  const { data, set } = useData();
+  const { data, set } = dataContext;
 
   const handlers = reactive<Record<string, ActionHandler>>(initialHandlers);
   const loadingActions = ref<Set<string>>(new Set());

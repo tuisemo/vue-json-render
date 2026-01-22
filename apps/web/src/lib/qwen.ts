@@ -156,8 +156,8 @@ export class QwenClient {
  * 创建Qwen客户端实例
  */
 export function createQwenClient(): QwenClient {
-  const apiKey = process.env.QWEN_API_KEY;
-  const baseURL = process.env.QWEN_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+  const apiKey = (globalThis as any).process?.env?.QWEN_API_KEY || import.meta.env.VITE_QWEN_API_KEY;
+  const baseURL = (globalThis as any).process?.env?.QWEN_BASE_URL || import.meta.env.VITE_QWEN_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1';
 
   if (!apiKey) {
     throw new Error('QWEN_API_KEY is not set');

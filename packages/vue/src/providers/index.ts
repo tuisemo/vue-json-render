@@ -13,6 +13,7 @@ import {
   type ActionProviderProps,
   ACTION_CONTEXT_KEY,
 } from '../composables/useActions';
+import { provideDesignSystem } from '@vue-json-render/design-system';
 
 /**
  * JsonUIProvider - Main provider component
@@ -32,7 +33,7 @@ export const JsonUIProvider = defineComponent({
     },
     /** Auth state */
     authState: {
-      type: Object as PropType<{ isSignedIn: boolean; user?: Record<string, unknown> }> | undefined>,
+      type: Object as PropType<{ isSignedIn: boolean; user?: Record<string, unknown> } | undefined>,
       default: undefined,
     },
     /** Action handlers */
@@ -57,6 +58,14 @@ export const JsonUIProvider = defineComponent({
     },
   },
   setup(props, { slots }) {
+    // Provide design system context first (needed by useAurora, useGlass)
+    provideDesignSystem({
+      theme: 'aurora',
+      animations: true,
+      glassmorphism: true,
+      particleEffects: true,
+    });
+
     // Provide data context
     const dataContext = provideDataContext({
       initialData: props.initialData,
@@ -69,10 +78,11 @@ export const JsonUIProvider = defineComponent({
     provideVisibilityContext();
     provide(VISIBILITY_CONTEXT_KEY, true);
 
-    // Provide action context
+    // Provide action context (pass dataContext to avoid dependency issues)
     const actionContext = provideActionContext({
       handlers: props.actionHandlers,
       navigate: props.navigate,
+      dataContext,
     });
     provide(ACTION_CONTEXT_KEY, actionContext);
 
@@ -80,6 +90,6 @@ export const JsonUIProvider = defineComponent({
     const REGISTRY_KEY = Symbol('registry');
     provide(REGISTRY_KEY, props.registry);
 
-    return () => slots.default?.();
+    return () => slots['default']?.();
   },
 });

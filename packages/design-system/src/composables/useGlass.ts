@@ -39,13 +39,13 @@ export function useGlass() {
   }));
 
   const getGlassStyle = (variant: GlassVariant) => {
-    const styles: Record<GlassVariant, ReturnType<typeof computed>> = {
-      default: glassBase,
-      card: glassCard,
-      input: glassInput,
-      button: glassButton,
-    };
-    return styles[variant].value;
+    const styles = {
+      default: glassBase.value,
+      card: glassCard.value,
+      input: glassInput.value,
+      button: glassButton.value,
+    } as Record<GlassVariant, Record<string, string>>;
+    return styles[variant];
   };
 
   return {

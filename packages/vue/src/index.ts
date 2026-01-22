@@ -30,9 +30,11 @@ export {
 // Providers
 export { JsonUIProvider } from './providers';
 
-// Components
-export { default as Renderer } from './components/Renderer.vue';
-export { default as ConfirmDialog } from './components/ConfirmDialog.vue';
+// Note: Vue components (Renderer, ConfirmDialog) need to be imported directly from their files
+// They cannot be bundled by tsup because they require Vue SFC loader
+// Import them like this:
+// import Renderer from '@vue-json-render/vue/components/Renderer.vue';
+// import ConfirmDialog from '@vue-json-render/vue/components/ConfirmDialog.vue';
 
 // Re-export core types
 export type {
@@ -48,6 +50,8 @@ export type {
   DataModel,
   PatchOp,
   JsonPatch,
+  ComponentSchema,
+  ValidationMode,
 } from '@vue-json-render/core';
 
 export type {
@@ -110,11 +114,36 @@ export {
   check,
 } from '@vue-json-render/core';
 
+// Error handling utilities
+export {
+  JsonUIError,
+  ValidationError,
+  CatalogError,
+  ActionError,
+  StreamError,
+  RenderError,
+  isJsonUIError,
+  isValidationError,
+  isCatalogError,
+  isActionError,
+  getErrorMessage,
+  logError as coreLogError,
+} from '@vue-json-render/core';
+
+// Logging utilities
+export {
+  setLogger,
+  getLogger,
+  createLogger,
+  logDebug,
+  logInfo,
+  logWarn,
+  logError,
+  createScopedLogger,
+} from '@vue-json-render/core';
+
 // Design System
 export {
-  AuroraText,
-  GlassCard,
-  GlassButton,
   provideDesignSystem,
   useDesignSystem,
   useAurora,
@@ -130,3 +159,6 @@ export type {
   GlowStrength,
   DesignSystemConfig,
 } from '@vue-json-render/design-system';
+
+// Note: Design system Vue components (AuroraText, GlassCard, GlassButton) need to be
+// imported directly from '@vue-json-render/design-system/components/...'
